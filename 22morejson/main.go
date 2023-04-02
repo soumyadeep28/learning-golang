@@ -16,6 +16,7 @@ type course struct {
 func main() {
 	fmt.Println("welcome to video of json : ")
 	EncodingJson()
+	DecodeJson()
 }
 
 func EncodingJson() {
@@ -32,4 +33,38 @@ func EncodingJson() {
 		panic(err)
 	}
 	fmt.Printf("%s", finaljson)
+}
+
+func DecodeJson() {
+	jsondata := []byte(`
+	{
+		"coursename": "botcamp2",
+		"Price": 400,
+		"website": "mywebsite.com",
+		"tags ": ["boot1","camp"]
+}   
+	`)
+
+	var lcocourse course
+
+	checkvalid := json.Valid(jsondata)
+	if checkvalid {
+		fmt.Println("json is valid ")
+		json.Unmarshal(jsondata, &lcocourse)
+		fmt.Printf("%#v", lcocourse)
+		// here you cant print it as fmt.Println(lcocourse["Price"])
+	} else {
+		fmt.Println("this is not valid json file")
+	}
+
+	//another way to unmershal
+	var onlinedata map[string]interface{}
+	json.Unmarshal(jsondata, &onlinedata)
+	fmt.Printf("\n %#v", onlinedata)
+	fmt.Println(onlinedata["Price"])
+
+	for k, v := range onlinedata {
+		fmt.Printf("\n the key : %v and value of %v  if of type %T ", k, v, v)
+	}
+
 }
